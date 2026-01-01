@@ -13,23 +13,33 @@ This project performs an **Exploratory Data Analysis (EDA)** on customer financi
 
 ## Problem Statement
 
-Paisabazaar relies on accurate customer creditworthiness assessment to facilitate loan approvals and mitigate financial risks.The current methods of credit evaluation can be enhanced through advanced data analysis to better capture the combined impact of income, debt, credit utilization, and payment behavior on credit scores.
+Paisabazaar relies on accurate assessment of customer creditworthiness to support loan approvals and mitigate financial risk. Existing credit evaluation approaches can be further strengthened by leveraging exploratory data analysis to understand how income, debt, credit utilization, and payment behavior collectively influence customer credit scores.
 
-**Goal:** Accurately predict credit scores based on customer data, including income, credit card usage, and payment behavior, to assist Paisabazaar in:
+**Goal:**  
+To perform Exploratory Data Analysis (EDA) on customer financial and behavioral data in order to identify key patterns, risk indicators, and relationships that influence credit score categories, enabling Paisabazaar to:
 
-* Reducing loan defaults
-* Providing personalized financial product recommendations
-* Optimizing credit assessment processes
+- Improve credit risk assessment and early risk identification  
+- Support data-driven credit policy decisions  
+- Enable targeted financial product strategies based on customer profiles  
+- Lay a strong analytical foundation for future predictive modeling
+
 
 ---
 
-## Business Objectives
-The primary business objective is to improve Paisabazaar's credit assessment process by accurately predicting individual credit scores based on customer data. By leveraging features such as income, credit card usage, loan history, and payment behavior, the goal is to:
 
-1. **Enhance Credit Risk Management:** Improve the accuracy of credit score classification to reduce loan defaults.
-2. **Personalize Financial Recommendations:** Offer tailored financial products based on predicted credit scores.
-3. **Optimize Loan Approval Processes:** Streamline approvals through predictive modeling.
-4. **Increase Customer Satisfaction:** Provide actionable insights and advice to customers based on their credit profile.
+## Business Objectives
+
+1. **Strengthen Credit Risk Understanding:**  
+   Identify financial and behavioral factors that differentiate Good, Standard, and Poor credit score segments.
+
+2. **Support Risk-Aware Decision Making:**  
+   Highlight early risk indicators such as high credit utilization, delayed payments, and frequent credit inquiries.
+
+3. **Enable Customer Segmentation:**  
+   Assist in grouping customers based on income, credit behavior, and financial stability.
+
+4. **Foundation for Future Modeling:**  
+   Provide clean, validated insights that can be leveraged for building predictive credit scoring models in future phases.
 
 ---
 
@@ -50,7 +60,7 @@ The primary business objective is to improve Paisabazaar's credit assessment pro
 
 ## Methodology
 
-### 1. Data Cleaning & Preparation
+###  Data Cleaning & Preparation
 
 * Removed irrelevant columns (Customer_ID, Name, SSN, etc.)
 * Handled missing values (imputed `Annual_Income` with mean)
@@ -61,7 +71,7 @@ The primary business objective is to improve Paisabazaar's credit assessment pro
   * `Debt_to_Income_Ratio = Outstanding_Debt / Annual_Income`
   * `Income_Bracket` categorized into Low, Medium, High
 
-### 2. Exploratory Data Analysis (EDA)
+### Exploratory Data Analysis (EDA)
 
 #### **Univariate Analysis**
 
@@ -94,15 +104,6 @@ The primary business objective is to improve Paisabazaar's credit assessment pro
 * **Credit Scores:** Standard category dominates, Good and Poor categories require attention for targeted interventions
 * **Behavioral Trends:** Timely payments correlate with better credit scores; delayed payments are a key risk factor
 * **Occupational Insights:** Healthcare and technical roles dominate Good and Standard credit scores
-
----
-
-## Recommendations / Solution
-
-* Implement a **predictive credit scoring model** using features such as income, loans, credit utilization, and payment behavior.
-* Automate credit assessment to **streamline loan approvals**.
-* Offer **personalized financial products** based on predicted credit scores.
-* Monitor and analyze **payment behavior** to reduce defaults.
 
 ---
 
@@ -145,155 +146,6 @@ import matplotlib.patches as patches
 import warnings
 warnings.filterwarnings('ignore')
 ```
-
-## Load Dataset 
-```python
-bank_df = pd.read_csv(r"C:/Users/satya/OneDrive/Desktop/New folder/Power BI/Project/Banking-Fraud-Analysis-Paisabazzar/Paisabazaar_dateset.csv")
-
-# Dataset First Look
-bank_df.head()
-
-# Dataset Rows & Columns count
-print(f'Number of Rows in {bank_df.shape[0]}')
-print(f'Number of Columns in {bank_df.shape[1]}')
-
-# Dataset Info
-bank_df.info()
-
-# Dataset Duplicate Value Count
-bank_df.duplicated().sum()
-
-# Missing Values/Null Values Count
-bank_df.isnull().sum()
-
-```
-
-# Visualizing the missing 
-
-```python 
-def apply_chart_styling(ax,fig,title,subtitle,insight_text,logo_path = 'logo.png'):
-
-    fig.patch.set_facecolor('#D3D3D3')
-    ax.set_facecolor('#D3D3D3')
-
-    fig.text(0.09,1.05 , title,fontsize = 18 , fontweight = 'bold', fontfamily = 'serif')
-    fig.text(0.09,0.99 , subtitle,fontsize = 12,fontweight = 'bold',fontfamily = 'serif')
-
-    fig.text(1.1, 1.01, 'Insight', fontsize = 12, fontweight = 'bold',fontfamily = 'serif')
-    fig.text(1.1, 0.50, insight_text, fontsize = 12, fontweight = 'bold',fontfamily = 'serif')
-
-    logo = mpimg.imread(logo_path)
-    logo_ax = fig.add_axes([1.5,0.85,0.1,0.1])
-    logo_ax.imshow(logo)
-    logo_ax.axis('off')
-
-    ax.grid(axis = 'y',linestyle = '-', alpha = 0.4)
-    ax.set_axisbelow(True)
-
-    for spine in ['top','right','left']:
-        ax.spines[spine].set_visible(False)
-
-    ax.tick_params(axis = 'both',which = 'major', labelsize = 12)
-
-    l1 = lines.Line2D([1, 1], [0, 1], transform=fig.transFigure, figure=fig, color='black', lw=0.2)
-    fig.lines.extend([l1])
-
-missing_data = bank_df.isnull().sum().sort_values(ascending = False)
-
-fig,ax = plt.subplots(1,1,figsize = (18,10))
-
-bars = ax.bar(missing_data.index,missing_data.values,color = 'black')
-
-ax.set_xticklabels(ax.get_xticklabels(), rotation=90, ha='right')
-
-apply_chart_styling(ax = ax, fig = fig, title = 'Missing Data' , subtitle = 'Analyzing missing data values', insight_text = '''Certainly looking upto the
-dataset we can clearly see that there are no missing values''')
-
-plt.tight_layout()
-plt.show()
-
-```
-### Understanding Variables 
-
-```python
- # Dataset Columns
-bank_df.columns
-
-# Dataset Describe
-bank_df.describe()
-```
-1. ID: Unique identifier for each record.  
-2. Customer_ID: Unique identifier for each customer.  
-3. Month: Month of data collection or financial activity.  
-4. Name: Customer’s name (likely anonymized).  
-5. Age: Age of the customer.  
-6. SSN: Social Security Number (likely anonymized).  
-7. Occupation: Job title or role of the customer.  
-8. Annual_Income: Total income earned by the customer in a year.  
-9. Monthly_Inhand_Salary: Net salary received by the customer monthly.  
-10. Num_Bank_Accounts: Number of bank accounts held by the customer.  
-11. Num_Credit_Card: Number of credit cards owned by the customer.  
-12. Interest_Rate: Interest rate applicable to the customer’s loans or credit.  
-13. Num_of_Loan: Total number of loans taken by the customer.  
-14. Type_of_Loan: Categories of loans taken (e.g., personal, home, auto).  
-15. Delay_from_due_date: Average delay in payments from the due date.  
-16. Num_of_Delayed_Payment: Count of payments that were delayed.  
-17. Changed_Credit_Limit: Any changes made to the customer’s credit limit.  
-18. Num_Credit_Inquiries: Number of inquiries made on the customer’s credit report.  
-19. Credit_Mix: Composition of credit accounts (e.g., revolving, installment).  
-20. Outstanding_Debt: Total amount of debt currently owed by the customer.  
-21. Credit_Utilization_Ratio: Percentage of available credit being used.  
-22. Credit_History_Age: Length of time the customer has had credit accounts.  
-23. Payment_of_Min_Amount: Indicator of whether the customer pays the minimum amount due.  
-24. Total_EMI_per_month: Total equated monthly installment payments.  
-25. Amount_invested_monthly: Amount of money the customer invests each month.  
-26. Payment_Behaviour: Customer’s general payment habits (e.g., on-time, late).  
-27. Monthly_Balance: Average balance in the customer’s accounts monthly.  
-28. Credit_Score: Classification of the customer’s creditworthy financial health and behavior.  
-
---- 
-### Check Unique Values for each variable.
-```python
-for column in bank_df.columns:
-    print(f'{column} : {len(bank_df[column].unique())}')
-```
-### 3.***Data Wrangling***
-```python
-bank_df.drop(['Customer_ID','Name','SSN','Month','Payment_of_Min_Amount','ID'],axis = 1, inplace = True)
-Q1 = bank_df['Annual_Income'].quantile(0.25)
-Q3 = bank_df['Annual_Income'].quantile(0.75)
-IQR = Q3 - Q1
-bank_df = bank_df[(bank_df['Annual_Income'] >= (Q1 - 1.5 * IQR)) & (bank_df['Annual_Income'] <= (Q3 + 1.5 * IQR))]
-bank_df['Annual_Income'].fillna(bank_df['Annual_Income'].mean(), inplace=True)
-bank_df['Monthly_Balance'] = pd.to_numeric(bank_df['Monthly_Balance'], errors='coerce')
-bank_df['Debt_to_Income_Ratio'] = bank_df['Outstanding_Debt'] / bank_df['Annual_Income']
-bank_df['Income_Bracket'] = pd.cut(bank_df['Annual_Income'], bins=[0, 20000, 50000, 100000], labels=['Low', 'Medium', 'High'])
-```
-
-### Data Manipulations:
-
-1. **Removed Irrelevant Columns**: Dropped unnecessary columns such as customer identifiers and unrelated attributes to focus on relevant financial and behavioral features.
-
-2. **Outlier Removal**: Filtered out extreme values in the **Annual_Income** column using the Interquartile Range (IQR) method. This step ensures that outliers do not skew the analysis.
-
-3. **Handled Missing Values**: Filled any missing entries in the **Annual_Income** column with the mean value to maintain dataset integrity and ensure all records have valid income data.
-
-4. **Data Type Conversion**: Converted the **Monthly_Balance** column to a numeric type, ensuring that calculations involving this column can be performed accurately.
-
-5. **Calculated Debt-to-Income Ratio**: Introduced a new metric, **Debt_to_Income_Ratio**, which shows the proportion of a customer’s income that goes towards paying debt. This is an important measure of creditworthiness.
-
-6. **Created Income Bracket**: Categorized customers' **Annual_Income** into three brackets (Low, Medium, High) to facilitate segmentation and targeted analysis.
-
-### Insights Found:
-
-- **Outlier Management**: Removing outliers allows for a more accurate representation of customer income, leading to more reliable insights.
-
-- **Debt-to-Income Ratio**: This new metric provides a clearer understanding of customers' financial health, indicating potential credit risks.
-
-- **Income Segmentation**: The creation of income brackets enables targeted analysis, making it easier to tailor financial product recommendations based on income levels.
-
-- **Improved Data Quality**: Addressing missing values and ensuring appropriate data types enhances the reliability of the dataset for predictivd on financial attributes.
----
 
 ## **Credit Score Distribution**
 ### Chart - 1 visualization code
@@ -547,7 +399,7 @@ plt.show()
 ![image alt](https://github.com/SatyaGanesh07/Credit-Score-Prediction-Analysis/blob/d961ba28cc4129d430ca4bfd2e945cd7e6c9d72a/Visuals/visual%207.png)
 
 ---
-# **5. Solution to Business Objective**
+## Solution to Business Objective
 I suggest the client implement a predictive credit scoring model. This model can accurately predict individual credit scores based on customer data, enabling Paisabazaar to achieve its business objectives of:
 
 Enhancing Credit Risk Management: By accurately assessing creditworthiness, the model can help minimize the risk of loan defaults and bad debt.
@@ -560,8 +412,12 @@ Increasing Customer Satisfaction: Providing personalized financial advice and pr
 The model can be built using machine learning techniques, leveraging features such as income, credit card usage, loan history, and payment behavior to predict credit scores with high accuracy.
 
 --- 
-# **Conclusion**
-The analysis of customer data provides valuable insights into the factors influencing credit scores and offers guidance for Paisabazaar's credit assessment processes. Key findings include a focus on the working population aged 25-45, a significant portion of customers with moderate to high earning capacity, a balanced credit score distribution with a notable portion having poor credit scores, responsible credit management among customers, a competitive market with varying interest rates, and the importance of age, income, credit utilization, and payment history in influencing credit scores. These findings offer valuable insights for Paisabazaar to refine their credit assessment models and improve risk management strategies by focusing on specific customer segments and tailoring their financial product offerings. Additionally, the analysis highlights the need for continuous monitoring of credit score trends and customer behavior to stay updated with evolving financial landscapes.
+
+## Conclusion
+
+This exploratory analysis highlights key financial and behavioral factors influencing credit score categories, including income levels, credit utilization, payment behavior, and credit inquiries. The findings emphasize the dominance of mid-risk customers and the importance of timely payments in maintaining credit health. These insights can support improved credit risk assessment and provide a strong analytical foundation for future predictive modeling initiatives.
+
+---
 # Tools & Technologies
 
 * **Python**
