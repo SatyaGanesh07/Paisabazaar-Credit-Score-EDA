@@ -24,6 +24,7 @@ Paisabazaar relies on accurate customer creditworthiness assessment to facilitat
 ---
 
 ## Business Objectives
+The primary business objective is to improve Paisabazaar's credit assessment process by accurately predicting individual credit scores based on customer data. By leveraging features such as income, credit card usage, loan history, and payment behavior, the goal is to:
 
 1. **Enhance Credit Risk Management:** Improve the accuracy of credit score classification to reduce loan defaults.
 2. **Personalize Financial Recommendations:** Offer tailored financial products based on predicted credit scores.
@@ -144,6 +145,78 @@ import matplotlib.patches as patches
 import warnings
 warnings.filterwarnings('ignore')
 ```
+
+## Load Dataset 
+```python
+bank_df = pd.read_csv(r"C:/Users/satya/OneDrive/Desktop/New folder/Power BI/Project/Banking-Fraud-Analysis-Paisabazzar/Paisabazaar_dateset.csv")
+
+# Dataset First Look
+bank_df.head()
+
+# Dataset Rows & Columns count
+print(f'Number of Rows in {bank_df.shape[0]}')
+print(f'Number of Columns in {bank_df.shape[1]}')
+
+# Dataset Info
+bank_df.info()
+
+# Dataset Duplicate Value Count
+bank_df.duplicated().sum()
+
+# Missing Values/Null Values Count
+bank_df.isnull().sum()
+
+```
+
+# Visualizing the missing 
+
+```python 
+def apply_chart_styling(ax,fig,title,subtitle,insight_text,logo_path = 'logo.png'):
+
+    fig.patch.set_facecolor('#D3D3D3')
+    ax.set_facecolor('#D3D3D3')
+
+    fig.text(0.09,1.05 , title,fontsize = 18 , fontweight = 'bold', fontfamily = 'serif')
+    fig.text(0.09,0.99 , subtitle,fontsize = 12,fontweight = 'bold',fontfamily = 'serif')
+
+    fig.text(1.1, 1.01, 'Insight', fontsize = 12, fontweight = 'bold',fontfamily = 'serif')
+    fig.text(1.1, 0.50, insight_text, fontsize = 12, fontweight = 'bold',fontfamily = 'serif')
+
+    logo = mpimg.imread(logo_path)
+    logo_ax = fig.add_axes([1.5,0.85,0.1,0.1])
+    logo_ax.imshow(logo)
+    logo_ax.axis('off')
+
+    ax.grid(axis = 'y',linestyle = '-', alpha = 0.4)
+    ax.set_axisbelow(True)
+
+    for spine in ['top','right','left']:
+        ax.spines[spine].set_visible(False)
+
+    ax.tick_params(axis = 'both',which = 'major', labelsize = 12)
+
+    l1 = lines.Line2D([1, 1], [0, 1], transform=fig.transFigure, figure=fig, color='black', lw=0.2)
+    fig.lines.extend([l1])
+
+missing_data = bank_df.isnull().sum().sort_values(ascending = False)
+
+fig,ax = plt.subplots(1,1,figsize = (18,10))
+
+bars = ax.bar(missing_data.index,missing_data.values,color = 'black')
+
+ax.set_xticklabels(ax.get_xticklabels(), rotation=90, ha='right')
+
+apply_chart_styling(ax = ax, fig = fig, title = 'Missing Data' , subtitle = 'Analyzing missing data values', insight_text = '''Certainly looking upto the
+dataset we can clearly see that there are no missing values''')
+
+plt.tight_layout()
+plt.show()
+
+```
+--- 
+
+
+
 ---
 
 # Tools & Technologies
